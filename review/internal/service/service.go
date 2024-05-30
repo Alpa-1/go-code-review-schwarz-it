@@ -8,7 +8,7 @@ import (
 )
 
 type Repository interface {
-	FindByCode(string) (*Coupon, error)
+	FindByCode(string) (Coupon, error)
 	Save(Coupon) error
 }
 
@@ -84,5 +84,5 @@ func (s Service) ValidateCoupon(code string) (Coupon, error) {
 		return Coupon{}, e
 	}
 
-	return *coupon, nil
+	return coupon, nil
 }

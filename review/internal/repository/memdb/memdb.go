@@ -20,14 +20,14 @@ func New() *Repository {
 	return &Repository{entries: make(map[string]entity.Coupon, 0)}
 }
 
-func (r *Repository) FindByCode(code string) (*entity.Coupon, error) {
+func (r *Repository) FindByCode(code string) (entity.Coupon, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 	coupon, ok := r.entries[code]
 	if !ok {
-		return nil, fmt.Errorf("coupon not found")
+		return entity.Coupon{}, fmt.Errorf("coupon not found")
 	}
-	return &coupon, nil
+	return coupon, nil
 }
 
 func (r *Repository) Save(coupon entity.Coupon) error {
