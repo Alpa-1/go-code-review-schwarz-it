@@ -76,6 +76,7 @@ func (s Service) CreateCoupon(discount int, code string, minBasketValue int) err
 	return nil
 }
 
+// returns a list of valid coupons based on the codes provided
 func (s Service) GetCoupons(codes []string) ([]Coupon, error) {
 	coupons := make([]Coupon, 0, len(codes))
 	var e error = nil
@@ -88,8 +89,9 @@ func (s Service) GetCoupons(codes []string) ([]Coupon, error) {
 			} else {
 				e = fmt.Errorf("%w; code: %s, index: %d", e, code, idx)
 			}
+		} else {
+			coupons = append(coupons, *coupon)
 		}
-		coupons = append(coupons, *coupon)
 	}
 
 	return coupons, e
