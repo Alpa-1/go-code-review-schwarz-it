@@ -32,14 +32,14 @@ func (a *API) Create(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func (a *API) Get(c *gin.Context) {
+func (a *API) Validate(c *gin.Context) {
 	apiReq := CouponRequest{}
 	if err := c.ShouldBindJSON(&apiReq); err != nil {
 		return
 	}
-	coupons, err := a.svc.GetCoupons(apiReq.Codes)
+	coupon, err := a.svc.ValidateCoupon(apiReq.Code)
 	if err != nil {
 		return
 	}
-	c.JSON(http.StatusOK, coupons)
+	c.JSON(http.StatusOK, coupon)
 }

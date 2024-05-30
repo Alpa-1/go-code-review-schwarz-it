@@ -15,7 +15,7 @@ import (
 type Service interface {
 	ApplyCoupon(entity.Basket, string) (*entity.Basket, error)
 	CreateCoupon(int, string, int) error
-	GetCoupons([]string) ([]entity.Coupon, error)
+	ValidateCoupon(string) (entity.Coupon, error)
 }
 
 type API struct {
@@ -48,7 +48,6 @@ func (a API) withServer() API {
 
 func (a API) withRoutes() API {
 	apiGroup := a.MUX.Group("/api")
-	apiGroup.GET("/coupons", a.Get)
 	a.MUX.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"status": "404", "message": "page not found"})
 	})
@@ -58,6 +57,7 @@ func (a API) withRoutes() API {
 
 	apiGroup.POST("/coupons/apply", a.Apply)
 	apiGroup.POST("/coupons/create", a.Create)
+	apiGroup.POST("/coupons/validate", a.Validate)
 	return a
 }
 
