@@ -6,11 +6,6 @@ import (
 	"sync"
 )
 
-type repository interface {
-	FindByCode(string) (*entity.Coupon, error)
-	Save(entity.Coupon) error
-}
-
 type Repository struct {
 	mu      sync.RWMutex
 	entries map[string]entity.Coupon
