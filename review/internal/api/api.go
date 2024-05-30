@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"coupon_service/internal/config"
 	"coupon_service/internal/service/entity"
 	"fmt"
 	"log"
@@ -17,19 +18,14 @@ type Service interface {
 	GetCoupons([]string) ([]entity.Coupon, error)
 }
 
-type Config struct {
-	Host string
-	Port int
-}
-
 type API struct {
 	srv *http.Server
 	MUX *gin.Engine
 	svc Service
-	CFG Config
+	CFG config.Config
 }
 
-func New[T Service](cfg Config, svc T) API {
+func New[T Service](cfg config.Config, svc T) API {
 	gin.SetMode(gin.ReleaseMode)
 	r := new(gin.Engine)
 	r = gin.New()
@@ -44,7 +40,7 @@ func New[T Service](cfg Config, svc T) API {
 
 func (a API) withServer() API {
 	a.srv = &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", a.CFG.Host, a.CFG.Port),
+		Addr:    fmt.Sprintf("%s:%d", a.CFG.API.Host, a.CFG.API.Port),
 		Handler: a.MUX,
 	}
 	return a

@@ -42,7 +42,7 @@ func (s Service) ApplyCoupon(basket Basket, code string) (*Basket, error) {
 		return nil, fmt.Errorf("basket value is zero")
 	}
 
-	return nil, fmt.Errorf("Tried to apply discount to negative value")
+	return nil, fmt.Errorf("tried to apply discount to negative value")
 }
 
 // creates a new coupon

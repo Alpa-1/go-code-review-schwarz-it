@@ -1,24 +1,30 @@
 package config
 
 import (
-	"coupon_service/internal/api"
 	"log"
 
-	"github.com/brumhard/alligotor"
+	"github.com/ilyakaznacheev/cleanenv"
 )
 
-type coreConfig struct {
-	Environment string
-}
 type Config struct {
-	API  api.Config
-	CORE coreConfig
+	API struct {
+		Host string `yaml:"host" env:"API_HOST" env-description:"API Service host" env-default:"localhost"`
+		Port int    `yaml:"port" env:"API_PORT" env-description:"API Service port" env-default:"8080"`
+	} `yaml:"api"`
+	Environment string `yaml:"environment" env:"ENVIRONMENT" env-description:"Sets the running environment to either 'prod' or 'dev'" env-default:"dev"`
 }
 
 func New() Config {
-	cfg := Config{}
-	if err := alligotor.Get(&cfg); err != nil {
+	var cfg Config
+	err := cleanenv.ReadConfig("config.yml", &cfg)
+
+	if err != nil {
 		log.Fatal(err)
 	}
+	err = cleanenv.ReadEnv(&cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	return cfg
 }

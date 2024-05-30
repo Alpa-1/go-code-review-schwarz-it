@@ -17,13 +17,13 @@ var (
 )
 
 func main() {
-	if err := checkCores(); err != nil && cfg.CORE.Environment == "prod" {
+	if err := checkCores(); err != nil && cfg.Environment == "prod" {
 		log.Fatal(err)
 		return
 	}
 
 	svc := service.New(repo)
-	server := api.New(cfg.API, svc)
+	server := api.New(cfg, svc)
 	log.Printf("Starting coupon service server on %v", cfg.API.Port)
 	server.Start()
 	<-time.After(1 * time.Hour * 24 * 365)
