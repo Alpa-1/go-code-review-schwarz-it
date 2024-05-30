@@ -39,7 +39,7 @@ func New[T Service](cfg Config, svc T) API {
 		MUX: r,
 		CFG: cfg,
 		svc: svc,
-	}.withServer()
+	}.withServer().withRoutes()
 }
 
 func (a API) withServer() API {
