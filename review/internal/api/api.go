@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	apiEntity "coupon_service/internal/api/entity"
 	"coupon_service/internal/config"
 	"coupon_service/internal/service/entity"
 	"fmt"
@@ -49,10 +50,10 @@ func (a API) withServer() API {
 func (a API) withRoutes() API {
 	apiGroup := a.MUX.Group("/api")
 	a.MUX.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{"status": "404", "message": "page not found"})
+		c.JSON(http.StatusNotFound, apiEntity.APIError{Code: http.StatusNotFound, Message: "not found"})
 	})
 	a.MUX.NoMethod(func(c *gin.Context) {
-		c.JSON(http.StatusMethodNotAllowed, gin.H{"status": "405", "message": "method not allowed"})
+		c.JSON(http.StatusMethodNotAllowed, apiEntity.APIError{Code: http.StatusMethodNotAllowed, Message: "method not allowed"})
 	})
 
 	apiGroup.POST("/coupons/apply", a.Apply)
