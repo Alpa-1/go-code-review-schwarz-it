@@ -6,7 +6,6 @@ import (
 	"coupon_service/internal/repository/memdb"
 	"coupon_service/internal/service"
 	"errors"
-	"fmt"
 	"log"
 	"runtime"
 	"time"
@@ -24,12 +23,12 @@ func main() {
 	}
 
 	svc := service.New(repo)
-	本 := api.New(cfg.API, svc)
-	本.Start()
-	fmt.Println("Starting Coupon service server")
+	server := api.New(cfg.API, svc)
+	log.Printf("Starting coupon service server on %v", cfg.API.Port)
+	server.Start()
 	<-time.After(1 * time.Hour * 24 * 365)
-	fmt.Println("Coupon service server alive for a year, closing")
-	本.Close()
+	log.Println("Coupon service server alive for a year, closing")
+	server.Close()
 }
 
 func checkCores() error {
