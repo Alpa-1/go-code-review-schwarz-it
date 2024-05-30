@@ -51,6 +51,13 @@ func (a API) withRoutes() API {
 	apiGroup.POST("/apply", a.Apply)
 	apiGroup.POST("/create", a.Create)
 	apiGroup.GET("/coupons", a.Get)
+	a.MUX.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{"status": "404", "message": "page not found"})
+	})
+	a.MUX.NoMethod(func(c *gin.Context) {
+		c.JSON(http.StatusMethodNotAllowed, gin.H{"status": "405", "message": "method not allowed"})
+	})
+
 	return a
 }
 
