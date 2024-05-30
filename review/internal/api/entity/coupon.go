@@ -1,7 +1,7 @@
 package entity
 
 type Coupon struct {
-	Discount       int
-	Code           string
-	MinBasketValue int
+	Discount       int    `json:"discount" binding:"required"`
+	Code           string `json:"code" binding:"required"`
+	MinBasketValue int    `json:"min_basket_value" binding:"required"`
 }
