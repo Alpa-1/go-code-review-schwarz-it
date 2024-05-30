@@ -15,7 +15,7 @@ type Repository struct {
 }
 
 func New() *Repository {
-	return &Repository{}
+	return &Repository{entries: make(map[string]entity.Coupon, 0)}
 }
 
 func (r *Repository) FindByCode(code string) (*entity.Coupon, error) {
