@@ -45,7 +45,24 @@ func (s Service) ApplyCoupon(basket Basket, code string) (*Basket, error) {
 	return nil, fmt.Errorf("Tried to apply discount to negative value")
 }
 
-func (s Service) CreateCoupon(discount int, code string, minBasketValue int) any {
+// creates a new coupon
+func (s Service) CreateCoupon(discount int, code string, minBasketValue int) error {
+	if discount < 0 {
+		return fmt.Errorf("discount cannot be negative")
+	}
+
+	if discount > 100 {
+		return fmt.Errorf("discount cannot be greater than 100")
+	}
+
+	if minBasketValue < 0 {
+		return fmt.Errorf("minimum basket value cannot be negative")
+	}
+
+	if code == "" {
+		return fmt.Errorf("code cannot be empty")
+	}
+
 	coupon := Coupon{
 		Discount:       discount,
 		Code:           code,
