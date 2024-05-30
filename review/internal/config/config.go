@@ -7,8 +7,12 @@ import (
 	"github.com/brumhard/alligotor"
 )
 
+type coreConfig struct {
+	Environment string
+}
 type Config struct {
-	API api.Config
+	API  api.Config
+	CORE coreConfig
 }
 
 func New() Config {
