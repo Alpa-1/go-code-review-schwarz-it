@@ -13,7 +13,7 @@ import (
 )
 
 type Service interface {
-	ApplyCoupon(entity.Basket, string) (*entity.Basket, error)
+	ApplyCoupon(int, string) (*entity.Basket, error)
 	CreateCoupon(int, string, int) error
 	ValidateCoupon(string) (entity.Coupon, error)
 }
@@ -67,6 +67,7 @@ func (a API) Start() {
 	}
 }
 
+// Close closes the server gracefully, giving a total of 10 seconds for all connections to close
 func (a API) Close() {
 	<-time.After(5 * time.Second)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

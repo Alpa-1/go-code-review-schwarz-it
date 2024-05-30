@@ -22,23 +22,25 @@ func New(repo Repository) Service {
 	}
 }
 
-func (s Service) ApplyCoupon(basket Basket, code string) (*Basket, error) {
+func (s Service) ApplyCoupon(basketValue int, code string) (*Basket, error) {
+	basket := Basket{Value: basketValue, AppliedDiscount: 0, ApplicationSuccessful: false}
 	b := &basket
+
 	coupon, err := s.repo.FindByCode(code)
 	if err != nil {
 		return nil, fmt.Errorf("coupon for code '%s' not found: %w", code, err)
 	}
 
-	if b.Value > 0 && b.Value >= coupon.MinBasketValue {
+	if basketValue > 0 && basketValue >= coupon.MinBasketValue {
 		b.AppliedDiscount = coupon.Discount
 		b.ApplicationSuccessful = true
 		return b, nil
 	}
-	if b.Value > 0 && b.Value < coupon.MinBasketValue {
+	if basketValue > 0 && basketValue < coupon.MinBasketValue {
 		return nil, fmt.Errorf("basket value is less than minimum basket value")
 	}
 
-	if b.Value == 0 {
+	if basketValue == 0 {
 		return nil, fmt.Errorf("basket value is zero")
 	}
 
