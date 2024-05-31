@@ -67,7 +67,7 @@ func (a API) withRoutes() API {
 }
 
 func (a API) Start() {
-	if err := a.srv.ListenAndServe(); err != nil {
+	if err := a.srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatal(err)
 	}
 }
