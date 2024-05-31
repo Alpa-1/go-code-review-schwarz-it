@@ -1,0 +1,6 @@
+version: 3.9
+
+api: 
+  host: localhost
+  port: 8080
+environment: dev
