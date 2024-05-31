@@ -8,7 +8,6 @@ import (
 	"errors"
 	"log"
 	"runtime"
-	"time"
 )
 
 var (
@@ -26,9 +25,6 @@ func main() {
 	server := api.New(cfg, svc)
 	log.Printf("Starting coupon service server on %v", cfg.API.Port)
 	server.Start()
-	<-time.After(1 * time.Hour * 24 * 365)
-	log.Println("Coupon service server alive for a year, closing")
-	server.Close()
 }
 
 func checkCores() error {
