@@ -1,3 +1,4 @@
+// Config package provides the centralized configuration for the coupon_service api.
 package config
 
 import (
@@ -14,6 +15,7 @@ type Config struct {
 	Environment string `yaml:"environment" env:"ENVIRONMENT" env-description:"Sets the running environment to either 'prod' or 'dev'" env-default:"dev"`
 }
 
+// New returns a new Config instance. It reads the configuration from the config.yml in the root directory file and then the environment variables.
 func New() Config {
 	var cfg Config
 	err := cleanenv.ReadConfig("config.yml", &cfg)

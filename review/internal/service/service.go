@@ -1,3 +1,4 @@
+// Package service provides the business logic for the coupon service. It relies on the repository to interact with the database.
 package service
 
 import (
@@ -16,12 +17,17 @@ type Service struct {
 	repo Repository
 }
 
+// New creates a new service with the provided repository.
 func New(repo Repository) Service {
 	return Service{
 		repo: repo,
 	}
 }
 
+// ApplyCoupon applies a coupon to a basket and returns the updated basket if the code was applicable.
+//
+//	basketValue: the value of the basket in cents
+//	code: the coupon code
 func (s Service) ApplyCoupon(basketValue int, code string) (*Basket, error) {
 	basket := Basket{Value: basketValue, AppliedDiscount: 0}
 	b := &basket
@@ -47,7 +53,11 @@ func (s Service) ApplyCoupon(basketValue int, code string) (*Basket, error) {
 	return nil, fmt.Errorf("tried to apply discount to negative value")
 }
 
-// creates a new coupon
+// CreateCoupon creates a new coupon
+//
+//	discount: the discount percentage in whole percentages
+//	code: the coupon code
+//	minBasketValue: the minimum basket value required to apply the coupon in cents
 func (s Service) CreateCoupon(discount int, code string, minBasketValue int) error {
 	if discount < 0 {
 		return fmt.Errorf("discount cannot be negative")
@@ -78,7 +88,7 @@ func (s Service) CreateCoupon(discount int, code string, minBasketValue int) err
 	return nil
 }
 
-// validate a coupon by a given code
+// ValidateCoupon retrieves a coupon by its code from the repository.
 func (s Service) ValidateCoupon(code string) (Coupon, error) {
 	coupon, e := s.repo.FindByCode(code)
 

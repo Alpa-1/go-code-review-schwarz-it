@@ -1,3 +1,4 @@
+// Memdb provides an in-memory implementation of the Repository interface.
 package memdb
 
 import (
@@ -11,10 +12,12 @@ type Repository struct {
 	entries map[string]entity.Coupon
 }
 
+// New creates a new in-memory repository.
 func New() *Repository {
 	return &Repository{entries: make(map[string]entity.Coupon, 0)}
 }
 
+// FindByCode finds a coupon by its code.
 func (r *Repository) FindByCode(code string) (entity.Coupon, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
@@ -25,6 +28,7 @@ func (r *Repository) FindByCode(code string) (entity.Coupon, error) {
 	return coupon, nil
 }
 
+// Save saves a coupon in the repository.
 func (r *Repository) Save(coupon entity.Coupon) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()

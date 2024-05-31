@@ -1,3 +1,4 @@
+// Package api provides the API for the coupon service. It is responsible for handling the HTTP requests and responses.
 package api
 
 import (
@@ -26,6 +27,7 @@ type API struct {
 	CFG config.Config
 }
 
+// New creates a new API instance
 func New[T Service](cfg config.Config, svc T) API {
 	if cfg.Environment == "prod" {
 		gin.SetMode(gin.ReleaseMode)

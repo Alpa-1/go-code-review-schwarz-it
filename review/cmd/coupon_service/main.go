@@ -1,3 +1,4 @@
+// Binary for coupon_service command
 package main
 
 import (
