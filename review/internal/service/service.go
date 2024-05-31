@@ -23,7 +23,7 @@ func New(repo Repository) Service {
 }
 
 func (s Service) ApplyCoupon(basketValue int, code string) (*Basket, error) {
-	basket := Basket{Value: basketValue, AppliedDiscount: 0, ApplicationSuccessful: false}
+	basket := Basket{Value: basketValue, AppliedDiscount: 0}
 	b := &basket
 
 	coupon, err := s.repo.FindByCode(code)
@@ -32,8 +32,8 @@ func (s Service) ApplyCoupon(basketValue int, code string) (*Basket, error) {
 	}
 
 	if basketValue > 0 && basketValue >= coupon.MinBasketValue {
+		b.Value = int(basketValue - (basketValue * coupon.Discount / 100))
 		b.AppliedDiscount = coupon.Discount
-		b.ApplicationSuccessful = true
 		return b, nil
 	}
 	if basketValue > 0 && basketValue < coupon.MinBasketValue {
