@@ -27,7 +27,11 @@ type API struct {
 }
 
 func New[T Service](cfg config.Config, svc T) API {
-	gin.SetMode(gin.ReleaseMode)
+	if cfg.Environment == "prod" {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		gin.SetMode(gin.DebugMode)
+	}
 	r := new(gin.Engine)
 	r = gin.New()
 	r.Use(gin.Recovery())
