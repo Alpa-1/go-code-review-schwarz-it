@@ -33,6 +33,11 @@ func (r *Repository) Save(coupon entity.Coupon) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
+	_, ok := r.entries[coupon.Code]
+	if ok {
+		return fmt.Errorf("coupon already exists")
+	}
+
 	r.entries[coupon.Code] = coupon
 	return nil
 }
